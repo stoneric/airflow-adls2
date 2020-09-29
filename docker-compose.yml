@@ -1,0 +1,58 @@
+version: '2.1'
+services:
+
+    webserver:
+        image: airflow_ad:latest
+        restart: always
+        env_file:
+            - env_conf
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./logs:/usr/local/airflow/logs 
+            - ./cert:/cert
+        ports:
+            - "8083:8083"
+        command: webserver
+
+  #  flower:
+  #      image: airflow_ad:latest
+  #      restart: always
+  #      ports:
+  #          - "5555:5555"
+  #      command: flower
+
+    scheduler:
+        image: airflow_ad:latest
+        restart: always
+        env_file:
+            - env_conf
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./logs:/usr/local/airflow/logs
+        command: scheduler
+
+    worker:
+        image: airflow_ad:latest
+        restart: always
+        env_file:
+            - env_conf
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./logs:/usr/local/airflow/logs
+        command: worker
+  #  redis:
+  #     image: redis:latest
+  #     restart: always
+  #     env_file:
+  #         - env_conf 
+  #  postgresql:
+  #     image: postgres:latest
+  #     restart: always
+  #     environment:
+  #       POSTGRES_PASSWORD: passwd0 
+  #     env_file:
+  #        - env_conf
+  #     volumes:
+  #        - ./pgdata:/var/lib/postgresql/data
+
+           
